@@ -1,7 +1,7 @@
 ﻿#region Apache License Version 2.0
 /*----------------------------------------------------------------
 
-Copyright 2020 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
+Copyright 2021 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 except in compliance with the License. You may obtain a copy of the License at
@@ -19,7 +19,7 @@ Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
 #endregion Apache License Version 2.0
 
 /*----------------------------------------------------------------
-    Copyright (C) 2020 Senparc
+    Copyright (C) 2021 Senparc
     
     文件名：DefaultMpMessageContext.cs
     文件功能描述：公众号上下文消息的默认实现
@@ -260,6 +260,18 @@ namespace Senparc.Weixin.MP.MessageContexts
                         //    break;
                         #endregion
 
+                        #region 订阅通知事件
+                        case "SUBSCRIBE_MSG_POPUP_EVENT":
+                            requestMessage = new RequestMessageEvent_Subscribe_Msg_Popup();
+                            break;
+                        case "SUBSCRIBE_MSG_CHANGE_EVENT":
+                            requestMessage = new RequestMessageEvent_Subscribe_Msg_Change();
+                            break;
+                        case "SUBSCRIBE_MSG_SENT_EVENT":
+                            requestMessage = new RequestMessageEvent_Subscribe_Msg_Sent();
+                            break;
+                        #endregion
+                        
                         default://其他意外类型（也可以选择抛出异常）
                             requestMessage = new RequestMessageEventBase();
                             break;

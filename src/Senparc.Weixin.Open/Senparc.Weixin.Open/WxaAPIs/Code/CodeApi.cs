@@ -1,7 +1,7 @@
 ﻿#region Apache License Version 2.0
 /*----------------------------------------------------------------
 
-Copyright 2020 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
+Copyright 2021 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 except in compliance with the License. You may obtain a copy of the License at
@@ -19,7 +19,7 @@ Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
 #endregion Apache License Version 2.0
 
 /*----------------------------------------------------------------
-    Copyright (C) 2020 Senparc
+    Copyright (C) 2021 Senparc
     
     文件名：CodeApi.cs
     文件功能描述：代码管理
@@ -150,10 +150,11 @@ namespace Senparc.Weixin.Open.WxaAPIs
         /// <param name="version_desc">小程序版本说明和功能解释</param>
         /// <param name="feedback_info">反馈内容，至多 200 字</param>
         /// <param name="feedback_stuff">用 | 分割的 media_id 列表，至多 5 张图片, 可以通过新增临时素材接口上传而得到</param>
+        /// <param name="ugc_declare">用户生成内容场景（UGC）信息安全声明</param>
         /// <param name="timeOut"></param>
         /// <returns></returns>
         [ApiBind(NeuChar.PlatformType.WeChat_Open, "CodeApi.SubmitAudit", true)]
-        public static GetAuditResultJson SubmitAudit(string accessToken, List<SubmitAuditPageInfo> item_list, SubmitAuditPreviewInfo preview_info, string version_desc = "", string feedback_info = "", string feedback_stuff = "", int timeOut = Config.TIME_OUT)
+        public static GetAuditResultJson SubmitAudit(string accessToken, List<SubmitAuditPageInfo> item_list, SubmitAuditPreviewInfo preview_info = null, string version_desc = "", string feedback_info = "", string feedback_stuff = "", SubmitAuditUgcDeclareInfo ugc_declare = null, int timeOut = Config.TIME_OUT)
         {
             var url = string.Format(Config.ApiMpHost + "/wxa/submit_audit?access_token={0}", accessToken.AsUrlData());
 
@@ -162,9 +163,11 @@ namespace Senparc.Weixin.Open.WxaAPIs
             data = new
             {
                 item_list = item_list,
+                preview_info = preview_info,
+                version_desc = version_desc,
                 feedback_info = feedback_info,
                 feedback_stuff = feedback_stuff,
-                preview_info = preview_info
+                ugc_declare = ugc_declare
             };
 
             return CommonJsonSend.Send<GetAuditResultJson>(null, url, data, CommonJsonSendType.POST, timeOut);
@@ -482,10 +485,11 @@ namespace Senparc.Weixin.Open.WxaAPIs
         /// <param name="version_desc">小程序版本说明和功能解释</param>
         /// <param name="feedback_info">反馈内容，至多 200 字</param>
         /// <param name="feedback_stuff">用 | 分割的 media_id 列表，至多 5 张图片, 可以通过新增临时素材接口上传而得到</param>
+        /// <param name="ugc_declare">用户生成内容场景（UGC）信息安全声明</param>
         /// <param name="timeOut"></param>
         /// <returns></returns>
         [ApiBind(NeuChar.PlatformType.WeChat_Open, "CodeApi.SubmitAuditAsync", true)]
-        public static async Task<GetAuditResultJson> SubmitAuditAsync(string accessToken, List<SubmitAuditPageInfo> item_list, SubmitAuditPreviewInfo preview_info, string version_desc = "", string feedback_info = "", string feedback_stuff = "", int timeOut = Config.TIME_OUT)
+        public static async Task<GetAuditResultJson> SubmitAuditAsync(string accessToken, List<SubmitAuditPageInfo> item_list, SubmitAuditPreviewInfo preview_info= null, string version_desc = "", string feedback_info = "", string feedback_stuff = "", SubmitAuditUgcDeclareInfo ugc_declare=null, int timeOut = Config.TIME_OUT)
         {
             var url = string.Format(Config.ApiMpHost + "/wxa/submit_audit?access_token={0}", accessToken.AsUrlData());
 
@@ -494,9 +498,11 @@ namespace Senparc.Weixin.Open.WxaAPIs
             data = new
             {
                 item_list = item_list,
+                preview_info = preview_info,
+                version_desc = version_desc,
                 feedback_info = feedback_info,
                 feedback_stuff = feedback_stuff,
-                preview_info = preview_info
+                ugc_declare = ugc_declare
             };
 
             return await CommonJsonSend.SendAsync<GetAuditResultJson>(null, url, data, CommonJsonSendType.POST, timeOut).ConfigureAwait(false);
